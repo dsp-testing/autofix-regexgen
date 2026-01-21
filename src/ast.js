@@ -147,9 +147,12 @@ class Literal {
   }
 
   toString(flags) {
-    // CodeQL alert suppression: The jsesc library properly escapes backslashes for JavaScript
-    // string context. The replace() below escapes regex metacharacters. These are two separate
-    // escaping operations for different contexts, and backslashes do not need to be re-escaped.
+    // CodeQL/Code Review alert suppression: The jsesc library converts input backslashes to `\\`
+    // (two characters: backslash + backslash) which is the correct escaping for use in RegExp().
+    // The replace() below escapes OTHER regex metacharacters like (), [], etc.
+    // Adding backslash to the replace() character class would cause DOUBLE-ESCAPING:
+    // Input "\" -> jsesc outputs "\\" -> replace would convert to "\\\\" -> RegExp matches "\\" (wrong!)
+    // Current behavior: Input "\" -> jsesc outputs "\\" -> RegExp matches "\" (correct!)
     // lgtm[js/incomplete-string-escaping]
     return jsesc(this.value, { es6: flags && flags.indexOf('u') !== -1 })
       .replace(/[\t\n\f\r\$\(\)\*\+\-\.\?\[\]\^\|]/g, '\\$&')
