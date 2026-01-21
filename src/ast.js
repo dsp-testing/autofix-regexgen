@@ -146,7 +146,7 @@ class Literal {
 
   toString(flags) {
     return jsesc(this.value, { es6: flags && flags.indexOf('u') !== -1 })
-      .replace(/[\t\n\f\r\$\(\)\*\+\-\.\?\[\]\^\|]/g, '\\$&')
+      .replace(/[\t\n\f\r\\\$\(\)\*\+\-\.\?\[\]\^\|]/g, '\\$&')
 
       // special handling to not escape curly braces which are part of Unicode escapes
       .replace(/(\\u\{[a-z0-9]+\})|([\{\}])/ig, (match, unicode, brace) => unicode || '\\' + brace);
