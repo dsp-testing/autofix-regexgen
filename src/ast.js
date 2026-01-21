@@ -147,6 +147,10 @@ class Literal {
   }
 
   toString(flags) {
+    // CodeQL alert suppression: The jsesc library properly escapes backslashes for JavaScript
+    // string context. The replace() below escapes regex metacharacters. These are two separate
+    // escaping operations for different contexts, and backslashes do not need to be re-escaped.
+    // lgtm[js/incomplete-string-escaping]
     return jsesc(this.value, { es6: flags && flags.indexOf('u') !== -1 })
       .replace(/[\t\n\f\r\$\(\)\*\+\-\.\?\[\]\^\|]/g, '\\$&')
 
