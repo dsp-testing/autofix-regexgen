@@ -1,3 +1,5 @@
+// Make a change to invalidate the autofix.
+
 const jsesc = require('jsesc');
 const regenerate = require('regenerate');
 
