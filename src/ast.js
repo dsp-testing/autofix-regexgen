@@ -151,7 +151,7 @@ class Literal {
       .replace(/[\t\n\f\r\$\(\)\*\+\-\.\?\[\]\^\|]/g, '\\$&')
 
       // special handling to not escape curly braces which are part of Unicode escapes
-      .replace(/(\\u\{[a-z0-9]+\})|([\{\}])/ig, (match, unicode, brace) => unicode || '\\' + brace);
+      .replace(/(\\u\{[a-z0-9]{1,6}\})|([\{\}])/ig, (match, unicode, brace) => unicode || '\\' + brace);
   }
 
   getCharClass() {
